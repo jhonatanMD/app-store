@@ -3,10 +3,13 @@ import { Response } from 'express';
 import { Product } from 'src/model/product.model';
 import { PaginationProductQuery } from 'src/model/querys/pagination.product.query';
 import { ProductService } from 'src/service/impl/product.service';
-
+import { ParseIntPipe } from 'src/common/parse-int.pipe';
+import {CreateProductDto} from 'src/model/dto/product.dto'
 @Controller('products')
 export class ProductsController {
 
+  //npm i class-validator class-transformer
+  //npm i @nestjs/mapped-types
 
     constructor(private productService:ProductService){}
 
@@ -17,7 +20,7 @@ export class ProductsController {
    
     @Get('/:id')
     //getProducts(@Param() params : any): string {
-    getProductsId(@Param('id') id : any) : Product {
+    getProductsId(@Param('id',ParseIntPipe) id : number) : Product {
        return this.productService.findById(id);
     }
     @Get('pag/set')
@@ -41,7 +44,7 @@ export class ProductsController {
 
     @Post()
     @HttpCode(HttpStatus.OK)
-    create(@Body() product:Product) : Product{
+    create(@Body() product:CreateProductDto) {
         return this.productService.create(product);
     }
 

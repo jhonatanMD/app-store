@@ -1,4 +1,5 @@
 import { Injectable , NotFoundException ,HttpException , HttpStatus} from '@nestjs/common';
+import { CreateProductDto } from 'src/model/dto/product.dto';
 import { Product } from 'src/model/product.model';
 
 @Injectable()
@@ -25,10 +26,9 @@ export class ProductService {
     }
 
 
-    create(product:Product) : Product{
+    create(product:CreateProductDto){
 
-        product.setId( this.products.length + 1)
-        this.products.push(product);
+        this.products.push(new Product(this.products.length + 1, product.name,product.brand));
         return product;
     }
 }
